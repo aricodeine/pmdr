@@ -7,11 +7,13 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const SafeArea(
       child: Scaffold(
-          body: Center(
-              child: Icon(
-        Icons.timelapse_rounded,
-        size: 300,
-      ))),
+        body: Center(
+          child: Icon(
+            Icons.timelapse_rounded,
+            size: 300,
+          ),
+        ),
+      ),
     );
   }
 }
