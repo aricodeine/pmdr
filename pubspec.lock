@@ -273,7 +273,7 @@ packages:
     source: hosted
     version: "2.1.2"
   google_fonts:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: google_fonts
       sha256: f0b8d115a13ecf827013ec9fc883390ccc0e87a96ed5347a3114cac177ef18e8

@@ -21,14 +21,26 @@ class MyApp extends StatelessWidget {
           seedColor: Colors.deepPurple,
           brightness: Brightness.dark,
         ),
-        scaffoldBackgroundColor: Color(0xff1f1b2e),
-        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        scaffoldBackgroundColor: const Color(0xff1f1b2e),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
             elevation: 0,
+            selectedIconTheme: IconThemeData(
+              shadows: [
+                Shadow(
+                  color: const Color.fromARGB(255, 89, 75, 183).withAlpha(100),
+                  blurRadius: 10.0,
+                  offset: const Offset(
+                    0.0,
+                    3.0,
+                  ),
+                )
+              ],
+            ),
             type: BottomNavigationBarType.fixed,
             showUnselectedLabels: false,
             showSelectedLabels: false,
-            unselectedItemColor: Color(0xffFFF6F6),
-            selectedItemColor: Color(0xff664eff)),
+            unselectedItemColor: const Color(0xffFFF6F6),
+            selectedItemColor: const Color(0xff664eff)),
         canvasColor: Colors.transparent,
         useMaterial3: true,
         textTheme: TextTheme(

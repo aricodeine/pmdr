@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pmdr/blocs/cubit/homeswitch_cubit.dart';
+import 'package:pmdr/core/constants.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,46 +15,46 @@ class _HomeScreenState extends State<HomeScreen> {
     BlocProvider.of<HomeswitchCubit>(context).change(value);
   }
 
-  static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Home',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 1: Business',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 2: School',
-      style: optionStyle,
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         body: BlocBuilder<HomeswitchCubit, int>(
           builder: (context, state) {
-            return _widgetOptions[state];
+            return Center(child: widgetOptions[state]);
           },
         ),
         bottomNavigationBar: BlocBuilder<HomeswitchCubit, int>(
           builder: (context, state) {
             return BottomNavigationBar(
-              items: const <BottomNavigationBarItem>[
+              items: const [
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
-                  label: 'Home',
+                  icon: Icon(
+                    Icons.timelapse_rounded,
+                    size: kBottomNavigationIconSize,
+                  ),
+                  label: 'Pomodoro',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.business),
-                  label: 'Business',
+                  icon: Icon(
+                    Icons.mode_edit_outline_rounded,
+                    size: kBottomNavigationIconSize,
+                  ),
+                  label: 'Edit Timer',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.school),
-                  label: 'School',
+                  icon: Icon(
+                    Icons.task_alt_rounded,
+                    size: kBottomNavigationIconSize,
+                  ),
+                  label: 'Finished tasks',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.person_rounded,
+                    size: kBottomNavigationIconSize,
+                  ),
+                  label: 'Profile',
                 ),
               ],
               currentIndex: state,
