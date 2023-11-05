@@ -41,6 +41,8 @@ dependencies:
   json_annotation: ^4.8.1
   bloc: ^8.1.2
   google_fonts: ^6.1.0
+  circular_countdown_timer: ^0.2.3
+  gap: ^3.0.1
 
 dev_dependencies:
   flutter_test:

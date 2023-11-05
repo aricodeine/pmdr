@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pmdr/blocs/cubit/homeswitch_cubit.dart';
+import 'package:pmdr/core/constants.dart';
 import 'package:pmdr/screens/home_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -25,16 +26,7 @@ class MyApp extends StatelessWidget {
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
             elevation: 0,
             selectedIconTheme: IconThemeData(
-              shadows: [
-                Shadow(
-                  color: const Color.fromARGB(255, 89, 75, 183).withAlpha(100),
-                  blurRadius: 10.0,
-                  offset: const Offset(
-                    0.0,
-                    3.0,
-                  ),
-                )
-              ],
+              shadows: [kShadow],
             ),
             type: BottomNavigationBarType.fixed,
             showUnselectedLabels: false,
