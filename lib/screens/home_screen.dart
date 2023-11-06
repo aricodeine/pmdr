@@ -12,19 +12,19 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   void _onItemTapped(int value) {
-    BlocProvider.of<HomeswitchCubit>(context).change(value);
+    BlocProvider.of<HomeSwitchCubit>(context).change(value);
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: BlocBuilder<HomeswitchCubit, int>(
+        body: BlocBuilder<HomeSwitchCubit, int>(
           builder: (context, state) {
             return Center(child: widgetOptions[state]);
           },
         ),
-        bottomNavigationBar: BlocBuilder<HomeswitchCubit, int>(
+        bottomNavigationBar: BlocBuilder<HomeSwitchCubit, int>(
           builder: (context, state) {
             return BottomNavigationBar(
               items: const [

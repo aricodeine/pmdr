@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pmdr/blocs/cubit/homeswitch_cubit.dart';
+import 'package:pmdr/blocs/timer/bloc/timer_bloc.dart';
 import 'package:pmdr/core/constants.dart';
 import 'package:pmdr/screens/home_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -52,10 +53,14 @@ class MyApp extends StatelessWidget {
           displaySmall: GoogleFonts.pacifico(),
         ),
       ),
-      home: BlocProvider(
-        create: (context) => HomeswitchCubit(),
-        child: const HomeScreen(),
-      ),
+      home: MultiBlocProvider(providers: [
+        BlocProvider<HomeSwitchCubit>(
+          create: (BuildContext context) => HomeSwitchCubit(),
+        ),
+        BlocProvider<TimerBloc>(
+          create: (BuildContext context) => TimerBloc(),
+        ),
+      ], child: const HomeScreen()),
     );
   }
 }
