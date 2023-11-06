@@ -43,6 +43,7 @@ dependencies:
   google_fonts: ^6.1.0
   circular_countdown_timer: ^0.2.3
   gap: ^3.0.1
+  meta: ^1.9.1
 
 dev_dependencies:
   flutter_test:

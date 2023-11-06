@@ -9,7 +9,8 @@ class TimerProfile {
 
   const TimerProfile({required this.profileName, required this.numberOfMins});
 
-  factory TimerProfile.fromJson(Map<String, dynamic> json) => _$TimerProfileFromJson(json);
+  factory TimerProfile.fromJson(Map<String, dynamic> json) =>
+      _$TimerProfileFromJson(json);
 
   Map<String, dynamic> toJson() => _$TimerProfileToJson(this);
 }

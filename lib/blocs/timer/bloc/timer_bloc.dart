@@ -11,7 +11,8 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
     on<TimerInitialEvent>(timerInitialEvent);
   }
 
-  FutureOr<void> timerInitialEvent(TimerInitialEvent event, Emitter<TimerState> emit) async {
+  FutureOr<void> timerInitialEvent(
+      TimerInitialEvent event, Emitter<TimerState> emit) async {
     emit(TimerInitial());
     await Future.delayed(const Duration(seconds: 3));
     emit(TimerReadyState());
