@@ -5,10 +5,26 @@ sealed class TimerEvent {}
 
 class TimerInitialEvent extends TimerEvent {}
 
-class TimerStartEvent extends TimerEvent {}
+class TimerStartEvent extends TimerEvent {
+  final CountDownController controller;
 
-class TimerPauseEvent extends TimerEvent {}
+  TimerStartEvent({required this.controller});
+}
 
-class TimerStopEvent extends TimerEvent {}
+class TimerPauseEvent extends TimerEvent {
+  final CountDownController controller;
 
-class TimerResumeEvent extends TimerEvent {}
+  TimerPauseEvent({required this.controller});
+}
+
+class TimerResumeEvent extends TimerEvent {
+  final CountDownController controller;
+
+  TimerResumeEvent({required this.controller});
+}
+
+class TimerEndEvent extends TimerEvent {
+  final CountDownController controller;
+
+  TimerEndEvent({required this.controller});
+}

@@ -45,6 +45,55 @@ class _PomodoroViewState extends State<PomodoroView> {
               mins: Utilities.currentlySetProfile.numberOfMins,
               controller: _controller,
             ),
+            Gap(MediaQuery.of(context).size.height * 0.1),
+            BlocBuilder<TimerBloc, TimerState>(
+              builder: (context, state) {
+                if (state is TimerStartedState) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            BlocProvider.of<TimerBloc>(context)
+                                .add(TimerPauseEvent(controller: _controller));
+                          },
+                          icon: const Icon(
+                            Icons.pause_rounded,
+                            size: 60,
+                          )),
+                      const Gap(20),
+                      IconButton(
+                          onPressed: () {
+                            BlocProvider.of<TimerBloc>(context)
+                                .add(TimerEndEvent(controller: _controller));
+                          },
+                          icon: const Icon(
+                            Icons.skip_next_rounded,
+                            size: 60,
+                          ))
+                    ],
+                  );
+                }
+
+                if (state is TimerPausedState) {
+                  return IconButton(
+                      onPressed: () {
+                        BlocProvider.of<TimerBloc>(context)
+                            .add(TimerResumeEvent(controller: _controller));
+                      },
+                      icon: const Icon(
+                        Icons.play_arrow_rounded,
+                        size: 60,
+                      ));
+                }
+
+                return IconButton(
+                  onPressed: () => BlocProvider.of<TimerBloc>(context)
+                      .add(TimerStartEvent(controller: _controller)),
+                  icon: const Icon(Icons.play_arrow_rounded),
+                );
+              },
+            ),
           ],
         );
       },
