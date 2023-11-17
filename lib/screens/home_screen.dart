@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pmdr/blocs/cubit/homeswitch_cubit.dart';
+import 'package:gap/gap.dart';
+import 'package:intl/intl.dart';
+import 'package:pmdr/blocs/timer/bloc/timer_bloc.dart';
 import 'package:pmdr/core/constants.dart';
+import 'package:pmdr/core/widgets/app_title.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -11,56 +14,47 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  void _onItemTapped(int value) {
-    BlocProvider.of<HomeSwitchCubit>(context).change(value);
+  final DateTime today = DateTime.now();
+
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<TimerBloc>(context).add(TimerInitialEvent());
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: BlocBuilder<HomeSwitchCubit, int>(
-          builder: (context, state) {
-            return Center(child: widgetOptions[state]);
-          },
-        ),
-        bottomNavigationBar: BlocBuilder<HomeSwitchCubit, int>(
-          builder: (context, state) {
-            return BottomNavigationBar(
-              items: const [
-                BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.timelapse_rounded,
-                    size: kBottomNavigationIconSize,
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 10.0, bottom: 10, left: 20.0, right: 20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        today.day.toString(),
+                        style: kTodaysDateStyle,
+                      ),
+                      const Gap(10),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(DateFormat('E').format(today), style: kAppBarSubtextStyle),
+                          Text(DateFormat('MMM y').format(today), style: kAppBarSubtextStyle),
+                        ],
+                      )
+                    ],
                   ),
-                  label: 'Pomodoro',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.mode_edit_outline_rounded,
-                    size: kBottomNavigationIconSize,
-                  ),
-                  label: 'Edit Timer',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.task_alt_rounded,
-                    size: kBottomNavigationIconSize,
-                  ),
-                  label: 'Finished tasks',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.person_rounded,
-                    size: kBottomNavigationIconSize,
-                  ),
-                  label: 'Profile',
-                ),
-              ],
-              currentIndex: state,
-              onTap: _onItemTapped,
-            );
-          },
+                  const AppTitle(title: 'Pomodoro'),
+                ],
+              ),
+            ),
+            const Gap(20),
+          ],
         ),
       ),
     );
