@@ -18,7 +18,7 @@ class PmdrTimer extends StatelessWidget {
       duration: _mins * 60,
       initialDuration: 0,
       controller: _controller,
-      width: MediaQuery.of(context).size.width / 2,
+      width: MediaQuery.of(context).size.width / 1.5,
       height: MediaQuery.of(context).size.height / 2,
       ringColor: const Color.fromARGB(255, 63, 60, 82),
       fillColor: const Color(0xff664eff),
