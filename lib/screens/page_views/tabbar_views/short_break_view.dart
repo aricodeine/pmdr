@@ -16,7 +16,7 @@ class ShortBreakView extends StatelessWidget {
     return Column(
       children: [
         PmdrTimer(
-          mins: Utilities.currentlySetProfile.numberOfMins,
+          mins: Utilities.pomodoroProfile.numberOfMins,
           controller: _controller,
         ),
         const Gap(10),
