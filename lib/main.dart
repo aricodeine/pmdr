@@ -5,6 +5,7 @@ import 'package:pmdr/core/constants.dart';
 import 'package:pmdr/screens/home_screen.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
