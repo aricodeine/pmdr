@@ -13,76 +13,79 @@ class PomodoroView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        PmdrTimer(
-          mins: Utilities.pomodoroProfile.numberOfMins,
-          controller: _controller,
-        ),
-        const Gap(10),
-        BlocBuilder<TimerBloc, TimerState>(
-          builder: (context, state) {
-            if (state is TimerStartedState) {
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                      onPressed: () {
-                        BlocProvider.of<TimerBloc>(context)
-                            .add(TimerPauseEvent(controller: _controller));
-                      },
-                      icon: const Icon(
-                        Icons.pause_rounded,
-                        size: 60,
-                      )),
-                  const Gap(20),
-                  IconButton(
-                      onPressed: () {
-                        BlocProvider.of<TimerBloc>(context)
-                            .add(TimerEndEvent(controller: _controller));
-                      },
-                      icon: const Icon(
-                        Icons.skip_next_rounded,
-                        size: 60,
-                      ))
-                ],
-              );
-            }
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          PmdrTimer(
+            mins: Utilities.pomodoroProfile.numberOfMins,
+            controller: _controller,
+          ),
+          const Gap(10),
+          BlocBuilder<TimerBloc, TimerState>(
+            builder: (context, state) {
+              if (state is TimerStartedState) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                        onPressed: () {
+                          BlocProvider.of<TimerBloc>(context)
+                              .add(TimerPauseEvent(controller: _controller));
+                        },
+                        icon: const Icon(
+                          Icons.pause_rounded,
+                          size: 60,
+                        )),
+                    const Gap(20),
+                    IconButton(
+                        onPressed: () {
+                          BlocProvider.of<TimerBloc>(context)
+                              .add(TimerEndEvent(controller: _controller));
+                        },
+                        icon: const Icon(
+                          Icons.skip_next_rounded,
+                          size: 60,
+                        ))
+                  ],
+                );
+              }
 
-            if (state is TimerPausedState) {
+              if (state is TimerPausedState) {
+                return IconButton(
+                    onPressed: () {
+                      BlocProvider.of<TimerBloc>(context)
+                          .add(TimerResumeEvent(controller: _controller));
+                    },
+                    icon: const Icon(
+                      Icons.play_arrow_rounded,
+                      size: 60,
+                    ));
+              }
+
               return IconButton(
-                  onPressed: () {
-                    BlocProvider.of<TimerBloc>(context)
-                        .add(TimerResumeEvent(controller: _controller));
-                  },
-                  icon: const Icon(
-                    Icons.play_arrow_rounded,
-                    size: 60,
-                  ));
-            }
-
-            return IconButton(
-              onPressed: () =>
-                  BlocProvider.of<TimerBloc>(context).add(TimerStartEvent(controller: _controller)),
-              icon: const Icon(Icons.play_arrow_rounded, size: 60),
-            );
-          },
-        ),
-        ListView.builder(
-          physics: const NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          itemCount: 20,
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-                leading: const Icon(Icons.list),
-                trailing: const Text(
-                  "GFG",
-                  style: TextStyle(color: Colors.green, fontSize: 15),
-                ),
-                title: Text("List item $index"));
-          },
-        ),
-      ],
+                onPressed: () => BlocProvider.of<TimerBloc>(context)
+                    .add(TimerStartEvent(controller: _controller)),
+                icon: const Icon(Icons.play_arrow_rounded, size: 60),
+              );
+            },
+          ),
+          ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: 20,
+            itemBuilder: (BuildContext context, int index) {
+              return ListTile(
+                  leading: const Icon(Icons.list),
+                  trailing: const Text(
+                    "GFG",
+                    style: TextStyle(color: Colors.green, fontSize: 15),
+                  ),
+                  title: Text("List item $index"));
+            },
+          ),
+        ],
+      ),
     );
   }
 }

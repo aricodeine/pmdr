@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
+import 'package:pmdr/blocs/timer/bloc/timer_bloc.dart';
 import 'package:pmdr/core/constants.dart';
 import 'package:pmdr/core/widgets/app_title.dart';
-import 'package:pmdr/core/widgets/dot_indicator.dart';
-import 'package:pmdr/screens/page_views/tabbar_views/longg_break_view.dart';
+import 'package:pmdr/core/widgets/curved_background.dart';
+import 'package:pmdr/screens/page_views/tabbar_views/long_break_view.dart';
 import 'package:pmdr/screens/page_views/tabbar_views/pomodoro_view.dart';
 import 'package:pmdr/screens/page_views/tabbar_views/short_break_view.dart';
 
@@ -17,19 +20,29 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
   final DateTime today = DateTime.now();
-  late TabController _tabController;
+  final _key = GlobalKey<ExpandableFabState>();
+  final Color navigationBarColor = Colors.white;
+  late PageController _pageController;
 
   @override
   void initState() {
     super.initState();
-    // BlocProvider.of<TimerBloc>(context).add(TimerInitialEvent());
-    _tabController = TabController(vsync: this, length: 3);
+    BlocProvider.of<TimerBloc>(context).add(TimerInitialEvent());
+    _pageController = PageController();
   }
 
   @override
   void dispose() {
-    _tabController.dispose();
+    _pageController.dispose();
     super.dispose();
+  }
+
+  void _toggleExpandableFab() {
+    final state = _key.currentState;
+    if (state != null) {
+      debugPrint('isOpen:${state.isOpen}');
+      state.toggle();
+    }
   }
 
   @override
@@ -67,39 +80,53 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           ),
         ),
       ),
-      body: Container(
-        width: deviceSize.width,
-        height: deviceSize.height,
-        decoration: kBackgroundDecoration,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TabBar(
-                controller: _tabController,
-                indicator: const DotIndicator(),
-                overlayColor: const MaterialStatePropertyAll(Colors.transparent),
-                tabs: const [
-                  Tab(
-                    text: 'Pomodoro',
-                  ),
-                  Tab(
-                    text: 'Short Break',
-                  ),
-                  Tab(
-                    text: 'Long Break',
-                  ),
-                ]),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.75,
-              child: TabBarView(controller: _tabController, children: [
-                SingleChildScrollView(child: PomodoroView()),
-                SingleChildScrollView(child: ShortBreakView()),
-                SingleChildScrollView(child: LongBreakView())
-              ]),
+      body: Stack(
+        children: [
+          const CurvedBackground(), // Curved background goes here
+          SizedBox(
+            width: deviceSize.width,
+            height: deviceSize.height,
+            child: PageView(
+              physics: const NeverScrollableScrollPhysics(),
+              controller: _pageController,
+              children: <Widget>[
+                PomodoroView(),
+                ShortBreakView(),
+                LongBreakView(),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
+      floatingActionButtonLocation: ExpandableFab.location,
+      floatingActionButton: ExpandableFab(
+          key: _key,
+          overlayStyle: ExpandableFabOverlayStyle(blur: 10),
+          distance: 80,
+          type: ExpandableFabType.up,
+          children: [
+            FloatingActionButton.extended(
+                onPressed: () {
+                  _pageController.animateToPage(0,
+                      duration: kNavigationDuration, curve: Curves.easeIn);
+                  _toggleExpandableFab();
+                },
+                label: const Text('Pomodoro')),
+            FloatingActionButton.extended(
+                onPressed: () {
+                  _pageController.animateToPage(1,
+                      duration: kNavigationDuration, curve: Curves.easeIn);
+                  _toggleExpandableFab();
+                },
+                label: const Text('Short Break')),
+            FloatingActionButton.extended(
+                onPressed: () {
+                  _pageController.animateToPage(2,
+                      duration: kNavigationDuration, curve: Curves.easeIn);
+                  _toggleExpandableFab();
+                },
+                label: const Text('Long Break')),
+          ]),
     );
   }
 }

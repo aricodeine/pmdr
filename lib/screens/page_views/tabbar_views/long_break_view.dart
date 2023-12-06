@@ -14,9 +14,10 @@ class LongBreakView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         PmdrTimer(
-          mins: Utilities.pomodoroProfile.numberOfMins,
+          mins: Utilities.longBreakProfile.numberOfMins,
           controller: _controller,
         ),
         const Gap(10),

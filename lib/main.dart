@@ -34,6 +34,10 @@ class MyApp extends StatelessWidget {
             showSelectedLabels: false,
             unselectedItemColor: const Color(0xffFFF6F6),
             selectedItemColor: const Color(0xff664eff)),
+        floatingActionButtonTheme: const FloatingActionButtonThemeData(
+          backgroundColor: kAppColor,
+          splashColor: Color(0xff664eff),
+        ),
         canvasColor: Colors.transparent,
         useMaterial3: true,
       ),
