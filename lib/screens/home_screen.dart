@@ -1,3 +1,4 @@
+import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
@@ -22,6 +23,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   final DateTime today = DateTime.now();
   final _key = GlobalKey<ExpandableFabState>();
   final Color navigationBarColor = Colors.white;
+  CountDownController countDownController = CountDownController();
   late PageController _pageController;
 
   @override
@@ -35,6 +37,13 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   void dispose() {
     _pageController.dispose();
     super.dispose();
+  }
+
+  void _timerGarbageCollector() {
+    final timerState = context.read<TimerBloc>().state;
+    if (timerState is TimerStartedState || timerState is TimerPausedState) {
+      context.read<TimerBloc>().add(TimerEndEvent(controller: countDownController));
+    }
   }
 
   void _toggleExpandableFab() {
@@ -90,9 +99,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               physics: const NeverScrollableScrollPhysics(),
               controller: _pageController,
               children: <Widget>[
-                PomodoroView(),
-                ShortBreakView(),
-                LongBreakView(),
+                PomodoroView(countdownController: countDownController),
+                ShortBreakView(countdownController: countDownController),
+                LongBreakView(countdownController: countDownController),
               ],
             ),
           ),
@@ -107,22 +116,25 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           children: [
             FloatingActionButton.extended(
                 onPressed: () {
+                  _timerGarbageCollector();
                   _pageController.animateToPage(0,
-                      duration: kNavigationDuration, curve: Curves.easeIn);
+                      duration: kNavigationDuration, curve: Curves.easeInQuad);
                   _toggleExpandableFab();
                 },
                 label: const Text('Pomodoro')),
             FloatingActionButton.extended(
                 onPressed: () {
+                  _timerGarbageCollector();
                   _pageController.animateToPage(1,
-                      duration: kNavigationDuration, curve: Curves.easeIn);
+                      duration: kNavigationDuration, curve: Curves.easeInQuad);
                   _toggleExpandableFab();
                 },
                 label: const Text('Short Break')),
             FloatingActionButton.extended(
                 onPressed: () {
+                  _timerGarbageCollector();
                   _pageController.animateToPage(2,
-                      duration: kNavigationDuration, curve: Curves.easeIn);
+                      duration: kNavigationDuration, curve: Curves.easeInQuad);
                   _toggleExpandableFab();
                 },
                 label: const Text('Long Break')),

@@ -7,9 +7,9 @@ import 'package:pmdr/core/utils.dart';
 import 'package:pmdr/core/widgets/pmdr_timer.dart';
 
 class PomodoroView extends StatelessWidget {
-  PomodoroView({super.key});
+  const PomodoroView({super.key, required this.countdownController});
 
-  final CountDownController _controller = CountDownController();
+  final CountDownController countdownController;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class PomodoroView extends StatelessWidget {
         children: [
           PmdrTimer(
             mins: Utilities.pomodoroProfile.numberOfMins,
-            controller: _controller,
+            controller: countdownController,
           ),
           const Gap(10),
           BlocBuilder<TimerBloc, TimerState>(
@@ -31,7 +31,7 @@ class PomodoroView extends StatelessWidget {
                     IconButton(
                         onPressed: () {
                           BlocProvider.of<TimerBloc>(context)
-                              .add(TimerPauseEvent(controller: _controller));
+                              .add(TimerPauseEvent(controller: countdownController));
                         },
                         icon: const Icon(
                           Icons.pause_rounded,
@@ -41,7 +41,7 @@ class PomodoroView extends StatelessWidget {
                     IconButton(
                         onPressed: () {
                           BlocProvider.of<TimerBloc>(context)
-                              .add(TimerEndEvent(controller: _controller));
+                              .add(TimerEndEvent(controller: countdownController));
                         },
                         icon: const Icon(
                           Icons.skip_next_rounded,
@@ -55,7 +55,7 @@ class PomodoroView extends StatelessWidget {
                 return IconButton(
                     onPressed: () {
                       BlocProvider.of<TimerBloc>(context)
-                          .add(TimerResumeEvent(controller: _controller));
+                          .add(TimerResumeEvent(controller: countdownController));
                     },
                     icon: const Icon(
                       Icons.play_arrow_rounded,
@@ -65,7 +65,7 @@ class PomodoroView extends StatelessWidget {
 
               return IconButton(
                 onPressed: () => BlocProvider.of<TimerBloc>(context)
-                    .add(TimerStartEvent(controller: _controller)),
+                    .add(TimerStartEvent(controller: countdownController)),
                 icon: const Icon(Icons.play_arrow_rounded, size: 60),
               );
             },

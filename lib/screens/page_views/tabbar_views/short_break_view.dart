@@ -7,9 +7,9 @@ import 'package:pmdr/core/utils.dart';
 import 'package:pmdr/core/widgets/pmdr_timer.dart';
 
 class ShortBreakView extends StatelessWidget {
-  ShortBreakView({super.key});
+  const ShortBreakView({super.key, required this.countdownController});
 
-  final CountDownController _controller = CountDownController();
+  final CountDownController countdownController;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class ShortBreakView extends StatelessWidget {
       children: [
         PmdrTimer(
           mins: Utilities.shortBreakProfile.numberOfMins,
-          controller: _controller,
+          controller: countdownController,
         ),
         const Gap(10),
         BlocBuilder<TimerBloc, TimerState>(
@@ -30,7 +30,7 @@ class ShortBreakView extends StatelessWidget {
                   IconButton(
                       onPressed: () {
                         BlocProvider.of<TimerBloc>(context)
-                            .add(TimerPauseEvent(controller: _controller));
+                            .add(TimerPauseEvent(controller: countdownController));
                       },
                       icon: const Icon(
                         Icons.pause_rounded,
@@ -40,7 +40,7 @@ class ShortBreakView extends StatelessWidget {
                   IconButton(
                       onPressed: () {
                         BlocProvider.of<TimerBloc>(context)
-                            .add(TimerEndEvent(controller: _controller));
+                            .add(TimerEndEvent(controller: countdownController));
                       },
                       icon: const Icon(
                         Icons.skip_next_rounded,
@@ -54,7 +54,7 @@ class ShortBreakView extends StatelessWidget {
               return IconButton(
                   onPressed: () {
                     BlocProvider.of<TimerBloc>(context)
-                        .add(TimerResumeEvent(controller: _controller));
+                        .add(TimerResumeEvent(controller: countdownController));
                   },
                   icon: const Icon(
                     Icons.play_arrow_rounded,
@@ -63,8 +63,8 @@ class ShortBreakView extends StatelessWidget {
             }
 
             return IconButton(
-              onPressed: () =>
-                  BlocProvider.of<TimerBloc>(context).add(TimerStartEvent(controller: _controller)),
+              onPressed: () => BlocProvider.of<TimerBloc>(context)
+                  .add(TimerStartEvent(controller: countdownController)),
               icon: const Icon(Icons.play_arrow_rounded, size: 60),
             );
           },
