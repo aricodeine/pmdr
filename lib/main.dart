@@ -24,19 +24,14 @@ class MyApp extends StatelessWidget {
         ),
         scaffoldBackgroundColor: kAppColor,
         appBarTheme: const AppBarTheme(backgroundColor: Color(0xff1f1b2e)),
-        bottomNavigationBarTheme: BottomNavigationBarThemeData(
-            elevation: 0,
-            selectedIconTheme: IconThemeData(
-              shadows: [kShadow],
-            ),
-            type: BottomNavigationBarType.fixed,
-            showUnselectedLabels: false,
-            showSelectedLabels: false,
-            unselectedItemColor: const Color(0xffFFF6F6),
-            selectedItemColor: const Color(0xff664eff)),
         floatingActionButtonTheme: const FloatingActionButtonThemeData(
           backgroundColor: kAppColor,
           splashColor: Color(0xff664eff),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color(0xff707070),
+          ),
         ),
         canvasColor: Colors.transparent,
         useMaterial3: true,

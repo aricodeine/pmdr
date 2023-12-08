@@ -7,6 +7,7 @@ const kAppColor = Color(0xff1f1b2e);
 const kNavigationDuration = Duration(milliseconds: 300);
 const kAppBarSubtextStyle =
     TextStyle(fontSize: 17, color: Color(0xffBCC1CD), fontWeight: FontWeight.w700);
+const kButtonTextStyle = TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600);
 const kTodaysDateStyle = TextStyle(fontSize: 48, fontWeight: FontWeight.bold);
 const kBackgroundDecoration = BoxDecoration(
   color: Color(0xFF171827),
