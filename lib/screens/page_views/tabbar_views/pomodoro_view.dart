@@ -7,16 +7,11 @@ import 'package:pmdr/core/utils.dart';
 import 'package:pmdr/core/widgets/add_button.dart';
 import 'package:pmdr/core/widgets/pmdr_timer.dart';
 
-class PomodoroView extends StatefulWidget {
+class PomodoroView extends StatelessWidget {
   const PomodoroView({super.key, required this.countdownController});
 
   final CountDownController countdownController;
 
-  @override
-  State<PomodoroView> createState() => _PomodoroViewState();
-}
-
-class _PomodoroViewState extends State<PomodoroView> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -25,7 +20,7 @@ class _PomodoroViewState extends State<PomodoroView> {
         children: [
           PmdrTimer(
             mins: Utilities.pomodoroProfile.numberOfMins,
-            controller: widget.countdownController,
+            controller: countdownController,
           ),
           const Gap(10),
           BlocBuilder<TimerBloc, TimerState>(
@@ -37,7 +32,7 @@ class _PomodoroViewState extends State<PomodoroView> {
                     IconButton(
                         onPressed: () {
                           BlocProvider.of<TimerBloc>(context)
-                              .add(TimerPauseEvent(controller: widget.countdownController));
+                              .add(TimerPauseEvent(controller: countdownController));
                         },
                         icon: const Icon(
                           Icons.pause_rounded,
@@ -47,7 +42,7 @@ class _PomodoroViewState extends State<PomodoroView> {
                     IconButton(
                         onPressed: () {
                           BlocProvider.of<TimerBloc>(context)
-                              .add(TimerEndEvent(controller: widget.countdownController));
+                              .add(TimerEndEvent(controller: countdownController));
                         },
                         icon: const Icon(
                           Icons.skip_next_rounded,
@@ -61,7 +56,7 @@ class _PomodoroViewState extends State<PomodoroView> {
                 return IconButton(
                     onPressed: () {
                       BlocProvider.of<TimerBloc>(context)
-                          .add(TimerResumeEvent(controller: widget.countdownController));
+                          .add(TimerResumeEvent(controller: countdownController));
                     },
                     icon: const Icon(
                       Icons.play_arrow_rounded,
@@ -71,7 +66,7 @@ class _PomodoroViewState extends State<PomodoroView> {
 
               return IconButton(
                 onPressed: () => BlocProvider.of<TimerBloc>(context)
-                    .add(TimerStartEvent(controller: widget.countdownController)),
+                    .add(TimerStartEvent(controller: countdownController)),
                 icon: const Icon(Icons.play_arrow_rounded, size: 60),
               );
             },
