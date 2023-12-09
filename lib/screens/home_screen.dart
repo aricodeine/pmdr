@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
+import 'package:pmdr/blocs/tasks/bloc/tasks_bloc.dart';
 import 'package:pmdr/blocs/timer/bloc/timer_bloc.dart';
 import 'package:pmdr/core/constants.dart';
 import 'package:pmdr/core/widgets/app_title.dart';
@@ -31,6 +32,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     super.initState();
     BlocProvider.of<TimerBloc>(context).add(TimerInitialEvent());
     _pageController = PageController();
+    BlocProvider.of<TasksBloc>(context).add(FetchTasksInitial());
+    // BlocProvider.of<TasksBloc>(context)
+    //     .add(SaveTaskEvent(unsavedTask: Task(taskName: 'Demo Task 1')));
   }
 
   @override

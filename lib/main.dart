@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pmdr/blocs/tasks/bloc/tasks_bloc.dart';
 import 'package:pmdr/blocs/timer/bloc/timer_bloc.dart';
 import 'package:pmdr/core/constants.dart';
+import 'package:pmdr/core/services/tasks_service.dart';
 import 'package:pmdr/screens/home_screen.dart';
 
-void main() {
+/// Provides access to the ObjectBox Store throughout the app.
+late ObjectBox objectbox;
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  objectbox = await ObjectBox.create();
   runApp(const MyApp());
 }
 
@@ -39,6 +45,9 @@ class MyApp extends StatelessWidget {
       home: MultiBlocProvider(providers: [
         BlocProvider<TimerBloc>(
           create: (BuildContext context) => TimerBloc(),
+        ),
+        BlocProvider<TasksBloc>(
+          create: (BuildContext context) => TasksBloc(),
         ),
       ], child: const HomeScreen()),
     );
