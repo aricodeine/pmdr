@@ -47,4 +47,10 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
       emit(TasksErrorState(errorText: e.toString()));
     }
   }
+
+  @override
+  Future<void> close() async {
+    _tasksSubscription?.cancel();
+    super.close();
+  }
 }
