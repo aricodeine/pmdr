@@ -6,9 +6,9 @@ sealed class TasksState {}
 final class TasksInitial extends TasksState {}
 
 final class TasksFetchedState extends TasksState {
-  final Stream<List<Task>> tasksStream;
+  final List<Task> fetchedTasks;
 
-  TasksFetchedState({required this.tasksStream});
+  TasksFetchedState({required this.fetchedTasks});
 }
 
 final class TaskSavedState extends TasksState {}

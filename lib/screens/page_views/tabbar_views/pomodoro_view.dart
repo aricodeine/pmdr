@@ -5,17 +5,29 @@ import 'package:gap/gap.dart';
 import 'package:pmdr/blocs/tasks/bloc/tasks_bloc.dart';
 import 'package:pmdr/blocs/timer/bloc/timer_bloc.dart';
 import 'package:pmdr/core/utils.dart';
+import 'package:pmdr/core/constants.dart';
 import 'package:pmdr/core/widgets/add_button.dart';
+import 'package:pmdr/core/widgets/add_task_form.dart';
 import 'package:pmdr/core/widgets/pmdr_timer.dart';
 import 'package:pmdr/models/task/task.dart';
 
 class PomodoroView extends StatelessWidget {
-  const PomodoroView({super.key, required this.countdownController});
+  const PomodoroView(
+      {super.key, required this.countdownController, required PageController pageController})
+      : _pageController = pageController;
 
   final CountDownController countdownController;
+  final PageController _pageController;
 
   @override
   Widget build(BuildContext context) {
+    void timerGarbageCollector() {
+      final timerState = context.read<TimerBloc>().state;
+      if (timerState is TimerStartedState || timerState is TimerPausedState) {
+        context.read<TimerBloc>().add(TimerEndEvent(controller: countdownController));
+      }
+    }
+
     return SingleChildScrollView(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -45,6 +57,9 @@ class PomodoroView extends StatelessWidget {
                         onPressed: () {
                           BlocProvider.of<TimerBloc>(context)
                               .add(TimerEndEvent(controller: countdownController));
+                          timerGarbageCollector();
+                          _pageController.animateToPage(1,
+                              duration: kNavigationDuration, curve: Curves.easeInQuad);
                         },
                         icon: const Icon(
                           Icons.skip_next_rounded,
@@ -76,19 +91,29 @@ class PomodoroView extends StatelessWidget {
           BlocBuilder<TasksBloc, TasksState>(
             builder: (context, state) {
               if (state is TasksFetchedState) {
-                return StreamBuilder(
-                    stream: state.tasksStream,
-                    builder: (context, snapshot) {
-                      List<Task> tasks = snapshot.data ?? [];
-                      return ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: tasks.length,
-                          itemBuilder: (context, index) {
-                            return ListTile(
-                              title: Text('${tasks[index].id} ${tasks[index].taskName}'),
-                            );
-                          });
+                // return StreamBuilder(
+                //     stream: state.tasksStream,
+                //     builder: (context, snapshot) {
+                //       List<Task> tasks = snapshot.data ?? [];
+                // return ListView.builder(
+                //     physics: const NeverScrollableScrollPhysics(),
+                //     shrinkWrap: true,
+                //     itemCount: tasks.length,
+                //     itemBuilder: (context, index) {
+                //       return ListTile(
+                //         title: Text('${tasks[index].id} ${tasks[index].taskName}'),
+                //       );
+                //     });
+                //     });
+                List<Task> tasks = state.fetchedTasks;
+                return ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: tasks.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Text('${tasks[index].id} ${tasks[index].taskName}'),
+                      );
                     });
               }
               if (state is TasksLoadingState) {
@@ -97,7 +122,17 @@ class PomodoroView extends StatelessWidget {
               return const Text('No Tasks here!!');
             },
           ),
-          AddButton(onTap: () {}),
+          AddButton(onTap: () async {
+            Task? newTask = await showDialog<Task>(
+                context: context,
+                builder: (context) {
+                  return const AddTaskForm();
+                });
+
+            if (newTask != null && context.mounted) {
+              BlocProvider.of<TasksBloc>(context).add(SaveTaskEvent(unsavedTask: newTask));
+            }
+          }),
         ],
       ),
     );

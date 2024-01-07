@@ -24,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   final DateTime today = DateTime.now();
   final _key = GlobalKey<ExpandableFabState>();
   final Color navigationBarColor = Colors.white;
-  CountDownController countDownController = CountDownController();
+  CountDownController countdownController = CountDownController();
   late PageController _pageController;
 
   @override
@@ -33,8 +33,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     BlocProvider.of<TimerBloc>(context).add(TimerInitialEvent());
     _pageController = PageController();
     BlocProvider.of<TasksBloc>(context).add(FetchTasksInitial());
-    // BlocProvider.of<TasksBloc>(context)
-    //     .add(SaveTaskEvent(unsavedTask: Task(taskName: 'Demo Task 1')));
   }
 
   @override
@@ -46,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   void _timerGarbageCollector() {
     final timerState = context.read<TimerBloc>().state;
     if (timerState is TimerStartedState || timerState is TimerPausedState) {
-      context.read<TimerBloc>().add(TimerEndEvent(controller: countDownController));
+      context.read<TimerBloc>().add(TimerEndEvent(controller: countdownController));
     }
   }
 
@@ -103,9 +101,12 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               physics: const NeverScrollableScrollPhysics(),
               controller: _pageController,
               children: <Widget>[
-                PomodoroView(countdownController: countDownController),
-                ShortBreakView(countdownController: countDownController),
-                LongBreakView(countdownController: countDownController),
+                PomodoroView(
+                    countdownController: countdownController, pageController: _pageController),
+                ShortBreakView(
+                    countdownController: countdownController, pageController: _pageController),
+                LongBreakView(
+                    countdownController: countdownController, pageController: _pageController),
               ],
             ),
           ),

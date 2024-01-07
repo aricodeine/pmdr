@@ -3,16 +3,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:pmdr/blocs/timer/bloc/timer_bloc.dart';
+import 'package:pmdr/core/constants.dart';
 import 'package:pmdr/core/utils.dart';
 import 'package:pmdr/core/widgets/pmdr_timer.dart';
 
 class LongBreakView extends StatelessWidget {
-  const LongBreakView({super.key, required this.countdownController});
+  const LongBreakView(
+      {super.key, required this.countdownController, required PageController pageController})
+      : _pageController = pageController;
 
   final CountDownController countdownController;
+  final PageController _pageController;
 
   @override
   Widget build(BuildContext context) {
+    void timerGarbageCollector() {
+      final timerState = context.read<TimerBloc>().state;
+      if (timerState is TimerStartedState || timerState is TimerPausedState) {
+        context.read<TimerBloc>().add(TimerEndEvent(controller: countdownController));
+      }
+    }
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -41,6 +52,9 @@ class LongBreakView extends StatelessWidget {
                       onPressed: () {
                         BlocProvider.of<TimerBloc>(context)
                             .add(TimerEndEvent(controller: countdownController));
+                        timerGarbageCollector();
+                        _pageController.animateToPage(0,
+                            duration: kNavigationDuration, curve: Curves.easeInQuad);
                       },
                       icon: const Icon(
                         Icons.skip_next_rounded,
