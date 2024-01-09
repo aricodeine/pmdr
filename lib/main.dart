@@ -4,6 +4,7 @@ import 'package:pmdr/blocs/tasks/bloc/tasks_bloc.dart';
 import 'package:pmdr/blocs/timer/bloc/timer_bloc.dart';
 import 'package:pmdr/core/constants.dart';
 import 'package:pmdr/core/services/tasks_service.dart';
+import 'package:pmdr/cubits/cubit/vibrate_cubit.dart';
 import 'package:pmdr/screens/home_screen.dart';
 
 /// Provides access to the ObjectBox Store throughout the app.
@@ -48,6 +49,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<TasksBloc>(
           create: (BuildContext context) => TasksBloc(),
+        ),
+        BlocProvider<VibrateCubit>(
+          create: (BuildContext context) => VibrateCubit(),
         ),
       ], child: const HomeScreen()),
     );

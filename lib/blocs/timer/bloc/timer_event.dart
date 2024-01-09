@@ -25,6 +25,8 @@ final class TimerResumeEvent extends TimerEvent {
 
 final class TimerEndEvent extends TimerEvent {
   final CountDownController controller;
+  final VibrateCubit vibrateCubit;
+  final bool canVibrateNow;
 
-  TimerEndEvent({required this.controller});
+  TimerEndEvent({this.canVibrateNow = false, required this.vibrateCubit, required this.controller});
 }

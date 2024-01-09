@@ -9,6 +9,7 @@ import 'package:pmdr/core/constants.dart';
 import 'package:pmdr/core/widgets/add_button.dart';
 import 'package:pmdr/core/widgets/add_task_form.dart';
 import 'package:pmdr/core/widgets/pmdr_timer.dart';
+import 'package:pmdr/cubits/cubit/vibrate_cubit.dart';
 import 'package:pmdr/models/task/task.dart';
 
 class PomodoroView extends StatelessWidget {
@@ -24,7 +25,8 @@ class PomodoroView extends StatelessWidget {
     void timerGarbageCollector() {
       final timerState = context.read<TimerBloc>().state;
       if (timerState is TimerStartedState || timerState is TimerPausedState) {
-        context.read<TimerBloc>().add(TimerEndEvent(controller: countdownController));
+        context.read<TimerBloc>().add(TimerEndEvent(
+            controller: countdownController, vibrateCubit: context.read<VibrateCubit>()));
       }
     }
 
@@ -55,8 +57,10 @@ class PomodoroView extends StatelessWidget {
                     const Gap(20),
                     IconButton(
                         onPressed: () {
-                          BlocProvider.of<TimerBloc>(context)
-                              .add(TimerEndEvent(controller: countdownController));
+                          context.read<TimerBloc>().add(TimerEndEvent(
+                              controller: countdownController,
+                              vibrateCubit: context.read<VibrateCubit>(),
+                              canVibrateNow: true));
                           timerGarbageCollector();
                           _pageController.animateToPage(1,
                               duration: kNavigationDuration, curve: Curves.easeInQuad);

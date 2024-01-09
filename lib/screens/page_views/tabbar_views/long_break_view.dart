@@ -6,6 +6,7 @@ import 'package:pmdr/blocs/timer/bloc/timer_bloc.dart';
 import 'package:pmdr/core/constants.dart';
 import 'package:pmdr/core/utils.dart';
 import 'package:pmdr/core/widgets/pmdr_timer.dart';
+import 'package:pmdr/cubits/cubit/vibrate_cubit.dart';
 
 class LongBreakView extends StatelessWidget {
   const LongBreakView(
@@ -20,7 +21,8 @@ class LongBreakView extends StatelessWidget {
     void timerGarbageCollector() {
       final timerState = context.read<TimerBloc>().state;
       if (timerState is TimerStartedState || timerState is TimerPausedState) {
-        context.read<TimerBloc>().add(TimerEndEvent(controller: countdownController));
+        context.read<TimerBloc>().add(TimerEndEvent(
+            controller: countdownController, vibrateCubit: context.read<VibrateCubit>()));
       }
     }
 
@@ -50,8 +52,10 @@ class LongBreakView extends StatelessWidget {
                   const Gap(20),
                   IconButton(
                       onPressed: () {
-                        BlocProvider.of<TimerBloc>(context)
-                            .add(TimerEndEvent(controller: countdownController));
+                        context.read<TimerBloc>().add(TimerEndEvent(
+                            controller: countdownController,
+                            vibrateCubit: context.read<VibrateCubit>(),
+                            canVibrateNow: true));
                         timerGarbageCollector();
                         _pageController.animateToPage(0,
                             duration: kNavigationDuration, curve: Curves.easeInQuad);

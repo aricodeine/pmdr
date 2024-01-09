@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:meta/meta.dart';
 import 'package:pmdr/core/services/timer_service.dart';
+import 'package:pmdr/cubits/cubit/vibrate_cubit.dart';
 
 part 'timer_event.dart';
 part 'timer_state.dart';
@@ -14,7 +15,7 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
     on<TimerStartEvent>(timerStartEvent);
     on<TimerPauseEvent>(timerPauseEvent);
     on<TimerResumeEvent>(timerResumeEvent);
-    on<TimerEndEvent>(timerFinishClickEvent);
+    on<TimerEndEvent>(timerEndEvent);
   }
 
   FutureOr<void> timerInitialEvent(TimerInitialEvent event, Emitter<TimerState> emit) {
@@ -38,8 +39,11 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
     emit(TimerStartedState());
   }
 
-  FutureOr<void> timerFinishClickEvent(TimerEndEvent event, Emitter<TimerState> emit) {
+  FutureOr<void> timerEndEvent(TimerEndEvent event, Emitter<TimerState> emit) {
     TimerService.endTimer(event.controller);
+    if (event.canVibrateNow && event.vibrateCubit.state) {
+      event.vibrateCubit.performVibration();
+    }
     emit(TimerReadyState());
   }
 }

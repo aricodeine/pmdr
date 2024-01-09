@@ -9,6 +9,7 @@ import 'package:pmdr/blocs/timer/bloc/timer_bloc.dart';
 import 'package:pmdr/core/constants.dart';
 import 'package:pmdr/core/widgets/app_title.dart';
 import 'package:pmdr/core/widgets/curved_background.dart';
+import 'package:pmdr/cubits/cubit/vibrate_cubit.dart';
 import 'package:pmdr/screens/page_views/tabbar_views/long_break_view.dart';
 import 'package:pmdr/screens/page_views/tabbar_views/pomodoro_view.dart';
 import 'package:pmdr/screens/page_views/tabbar_views/short_break_view.dart';
@@ -33,6 +34,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     BlocProvider.of<TimerBloc>(context).add(TimerInitialEvent());
     _pageController = PageController();
     BlocProvider.of<TasksBloc>(context).add(FetchTasksInitial());
+    BlocProvider.of<VibrateCubit>(context).hasVibrationFunctionality();
   }
 
   @override
@@ -41,10 +43,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     super.dispose();
   }
 
-  void _timerGarbageCollector() {
+  void timerGarbageCollector() {
     final timerState = context.read<TimerBloc>().state;
     if (timerState is TimerStartedState || timerState is TimerPausedState) {
-      context.read<TimerBloc>().add(TimerEndEvent(controller: countdownController));
+      context.read<TimerBloc>().add(TimerEndEvent(
+          controller: countdownController, vibrateCubit: context.read<VibrateCubit>()));
     }
   }
 
@@ -121,7 +124,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           children: [
             FloatingActionButton.extended(
                 onPressed: () {
-                  _timerGarbageCollector();
+                  timerGarbageCollector();
                   _pageController.animateToPage(0,
                       duration: kNavigationDuration, curve: Curves.easeInQuad);
                   _toggleExpandableFab();
@@ -129,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 label: const Text('Pomodoro')),
             FloatingActionButton.extended(
                 onPressed: () {
-                  _timerGarbageCollector();
+                  timerGarbageCollector();
                   _pageController.animateToPage(1,
                       duration: kNavigationDuration, curve: Curves.easeInQuad);
                   _toggleExpandableFab();
@@ -137,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 label: const Text('Short Break')),
             FloatingActionButton.extended(
                 onPressed: () {
-                  _timerGarbageCollector();
+                  timerGarbageCollector();
                   _pageController.animateToPage(2,
                       duration: kNavigationDuration, curve: Curves.easeInQuad);
                   _toggleExpandableFab();
