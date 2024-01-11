@@ -33,9 +33,9 @@ class ObjectBox {
 
   Task getTask(int id) => _taskBox.get(id)!;
 
-  void removeTask(int taskId) => _taskBox.removeAsync(taskId);
+  Future<void> removeTask(int taskId) async => await _taskBox.removeAsync(taskId);
 
-  void saveTask(Task task) async {
+  Future<void> saveTask(Task task) async {
     await _taskBox.putAsync(task);
     // _taskBox.removeAll();
     debugPrint('Saved task ${task.taskName}');

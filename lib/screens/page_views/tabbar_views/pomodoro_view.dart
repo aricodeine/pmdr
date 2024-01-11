@@ -92,23 +92,25 @@ class PomodoroView extends StatelessWidget {
               );
             },
           ),
-          BlocBuilder<TasksBloc, TasksState>(
+          AddButton(onTap: () async {
+            Task? newTask = await showDialog<Task>(
+                context: context,
+                builder: (context) {
+                  return const AddTaskForm();
+                });
+
+            if (newTask != null && context.mounted) {
+              BlocProvider.of<TasksBloc>(context).add(SaveTaskEvent(unsavedTask: newTask));
+            }
+          }),
+          const Gap(10),
+          const Divider(),
+          BlocConsumer<TasksBloc, TasksState>(
             builder: (context, state) {
-              if (state is TasksFetchedState && state.fetchedTasks.isNotEmpty) {
-                // return StreamBuilder(
-                //     stream: state.tasksStream,
-                //     builder: (context, snapshot) {
-                //       List<Task> tasks = snapshot.data ?? [];
-                // return ListView.builder(
-                //     physics: const NeverScrollableScrollPhysics(),
-                //     shrinkWrap: true,
-                //     itemCount: tasks.length,
-                //     itemBuilder: (context, index) {
-                //       return ListTile(
-                //         title: Text('${tasks[index].id} ${tasks[index].taskName}'),
-                //       );
-                //     });
-                //     });
+              if (state is TasksFetchedState) {
+                if (state.fetchedTasks.isEmpty) {
+                  return const Text('No tasks added');
+                }
                 List<Task> tasks = state.fetchedTasks.reversed.toList();
                 return ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
@@ -126,24 +128,16 @@ class PomodoroView extends StatelessWidget {
               if (state is TasksLoadingState) {
                 return const Center(child: CircularProgressIndicator());
               }
-              if (state is TasksErrorState) {
-                ScaffoldMessenger.of(context)
-                    .showSnackBar(SnackBar(content: Text(state.errorText)));
-              }
-              return const Text('No Tasks here!!');
+              return Container();
+            },
+            listener: (context, state) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Error:  ${(state as TasksErrorState).errorText}')));
+            },
+            listenWhen: (previous, current) {
+              return current is TasksErrorState;
             },
           ),
-          AddButton(onTap: () async {
-            Task? newTask = await showDialog<Task>(
-                context: context,
-                builder: (context) {
-                  return const AddTaskForm();
-                });
-
-            if (newTask != null && context.mounted) {
-              BlocProvider.of<TasksBloc>(context).add(SaveTaskEvent(unsavedTask: newTask));
-            }
-          }),
         ],
       ),
     );
