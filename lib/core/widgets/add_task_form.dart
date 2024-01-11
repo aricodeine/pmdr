@@ -45,8 +45,9 @@ class _AddTaskFormState extends State<AddTaskForm> {
               if (_controller.text.isNotEmpty) {
                 Task newTask = Task(taskName: _controller.text);
                 Navigator.pop(context, newTask);
+              } else {
+                Navigator.pop(context);
               }
-              Navigator.pop(context);
             },
             child: const Text('Add')),
         ElevatedButton(

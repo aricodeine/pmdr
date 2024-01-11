@@ -9,20 +9,18 @@ part 'tasks_event.dart';
 part 'tasks_state.dart';
 
 class TasksBloc extends Bloc<TasksEvent, TasksState> {
-  StreamSubscription<List<Task>>? _tasksSubscription;
-
   TasksBloc() : super(TasksInitial()) {
     on<FetchTasksInitial>(fetchTasksInitial);
     on<SaveTaskEvent>(saveTaskEvent);
     on<RemoveTaskEvent>(removeTaskEvent);
   }
 
-  FutureOr<void> fetchTasksInitial(FetchTasksInitial tasks, Emitter<TasksState> emit) {
+  FutureOr<void> fetchTasksInitial(FetchTasksInitial tasks, Emitter<TasksState> emit) async {
     emit(TasksLoadingState());
     try {
-      _tasksSubscription = objectbox.getTasks().listen((tasks) {
+      await for (final tasks in objectbox.getTasks()) {
         emit(TasksFetchedState(fetchedTasks: tasks));
-      });
+      }
     } catch (e) {
       emit(TasksErrorState(errorText: e.toString()));
     }
@@ -42,15 +40,10 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
     emit(TasksLoadingState());
     try {
       objectbox.removeTask(event.id);
+
       emit(TaskRemovedState());
     } catch (e) {
       emit(TasksErrorState(errorText: e.toString()));
     }
-  }
-
-  @override
-  Future<void> close() async {
-    _tasksSubscription?.cancel();
-    super.close();
   }
 }

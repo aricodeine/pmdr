@@ -94,7 +94,7 @@ class PomodoroView extends StatelessWidget {
           ),
           BlocBuilder<TasksBloc, TasksState>(
             builder: (context, state) {
-              if (state is TasksFetchedState) {
+              if (state is TasksFetchedState && state.fetchedTasks.isNotEmpty) {
                 // return StreamBuilder(
                 //     stream: state.tasksStream,
                 //     builder: (context, snapshot) {
@@ -109,19 +109,26 @@ class PomodoroView extends StatelessWidget {
                 //       );
                 //     });
                 //     });
-                List<Task> tasks = state.fetchedTasks;
+                List<Task> tasks = state.fetchedTasks.reversed.toList();
                 return ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: tasks.length,
                     itemBuilder: (context, index) {
                       return ListTile(
-                        title: Text('${tasks[index].id} ${tasks[index].taskName}'),
+                        onTap: () {
+                          context.read<TasksBloc>().add(RemoveTaskEvent(id: tasks[index].id));
+                        },
+                        title: Text(tasks[index].taskName),
                       );
                     });
               }
               if (state is TasksLoadingState) {
                 return const Center(child: CircularProgressIndicator());
+              }
+              if (state is TasksErrorState) {
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(content: Text(state.errorText)));
               }
               return const Text('No Tasks here!!');
             },
