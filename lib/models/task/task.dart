@@ -1,13 +1,17 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:objectbox/objectbox.dart';
 
 part 'task.g.dart';
 
+@Entity()
 @JsonSerializable()
 class Task {
-  final String taskName;
-  final bool? isCompleted;
+  @Id()
+  int id;
+  String taskName;
+  bool isCompleted;
 
-  const Task({required this.taskName, this.isCompleted});
+  Task({this.id = 0, required this.taskName, this.isCompleted = false});
 
   factory Task.fromJson(Map<String, dynamic> json) => _$TaskFromJson(json);
 
