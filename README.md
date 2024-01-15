@@ -4,14 +4,27 @@ PMDR is a Pomodoro timer app currently in development. The project utilizes the 
 
 ## Features
 
-
-- 3 sections: Pomodoro, Short Timer, Long Timer
+- 3 sections: Pomodoro(25 mins), Short Timer(5 mins), Long Timer(15 mins)
 
 - Vibration when timer ends.
 
 - Automatic navigation to Short Timer section when Pomodoro Timer ends.
 
+- Tapping on a task deletes it.
+
 - Local storage of tasks (uses Objectbox database)
+
+## Screenshots
+
+![Alt text](screenshots/image.png)
+
+![Alt text](screenshots/image-1.png)
+
+![Alt text](screenshots/image-2.png)
+
+![Alt text](screenshots/image-3.png)
+
+
 
 ## Installation
 
