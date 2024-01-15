@@ -16,13 +16,13 @@ PMDR is a Pomodoro timer app currently in development. The project utilizes the 
 
 ## Screenshots
 
-![Alt text](screenshots/image.png)
+<img src="screenshots/image.png" alt="pomodoro screen" width="300" height="700"/>
 
-![Alt text](screenshots/image-1.png)
+<img src="screenshots/image-1.png" alt="add task form" width="300" height="700"/>
 
-![Alt text](screenshots/image-2.png)
+<img src="screenshots/image-2.png" alt="fab" width="300" height="700"/>
 
-![Alt text](screenshots/image-3.png)
+<img src="screenshots/image-3.png" alt="timer started" width="300" height="700"/>
 
 
 
