@@ -31,10 +31,13 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<TimerBloc>(context).add(TimerInitialEvent());
+
     _pageController = PageController();
-    BlocProvider.of<TasksBloc>(context).add(FetchTasksInitial());
-    BlocProvider.of<VibrateCubit>(context).hasVibrationFunctionality();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      BlocProvider.of<TimerBloc>(context).add(TimerInitialEvent());
+      BlocProvider.of<TasksBloc>(context).add(FetchTasksInitial());
+      BlocProvider.of<VibrateCubit>(context).hasVibrationFunctionality();
+    });
   }
 
   @override
