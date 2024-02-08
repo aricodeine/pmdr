@@ -13,31 +13,27 @@ class AddButton extends StatefulWidget {
 class _AddButtonState extends State<AddButton> {
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: SizedBox(
-        width: size.width,
-        child: ElevatedButton(
-            onPressed: widget.onTap,
-            child: const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.add_rounded,
-                    color: Colors.white,
-                    size: 30,
-                  ),
-                  Text(
-                    'Add Task',
-                    style: kButtonTextStyle,
-                  )
-                ],
-              ),
-            )),
-      ),
+      child: ElevatedButton(
+          onPressed: widget.onTap,
+          child: const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.add_rounded,
+                  color: Colors.white,
+                  size: 30,
+                ),
+                Text(
+                  'Add Task',
+                  style: kButtonTextStyle,
+                )
+              ],
+            ),
+          )),
     );
   }
 }

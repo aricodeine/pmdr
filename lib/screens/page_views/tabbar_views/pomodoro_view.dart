@@ -117,11 +117,19 @@ class PomodoroView extends StatelessWidget {
                     shrinkWrap: true,
                     itemCount: tasks.length,
                     itemBuilder: (context, index) {
-                      return ListTile(
-                        onTap: () {
-                          context.read<TasksBloc>().add(RemoveTaskEvent(id: tasks[index].id));
-                        },
-                        title: Text(tasks[index].taskName),
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        child: Dismissible(
+                            key: ValueKey(index),
+                            onDismissed: (direction) =>
+                                context.read<TasksBloc>().add(RemoveTaskEvent(id: tasks[index].id)),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: kTaskColor, borderRadius: BorderRadius.circular(20)),
+                              child: ListTile(
+                                title: Text(tasks[index].taskName),
+                              ),
+                            )),
                       );
                     });
               }

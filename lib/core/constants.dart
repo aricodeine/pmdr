@@ -5,6 +5,7 @@ const TextStyle kOptionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bo
 const double kBottomNavigationIconSize = 35;
 const kAppColor = Color(0xff1f1b2e);
 const kNavigationDuration = Duration(milliseconds: 300);
+const kTaskColor = Color(0xff6C4EB3);
 const kAppBarSubtextStyle =
     TextStyle(fontSize: 17, color: Color(0xffBCC1CD), fontWeight: FontWeight.w700);
 const kButtonTextStyle = TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600);
